@@ -170,3 +170,88 @@ describe("Room.rate to be an int", () => {
         expect(new Room("a", [], 5.2, 0).rate % 1).toEqual(0);
     });
 });
+
+// Room.discount                 /////////////////////////////////////////////////////////////////////////////////////////
+describe("Room.discount to be a number", () => {
+    it("is int", () => {
+        expect(typeof (new Room("a", [], 1, 10).discount)).toBe("number");
+    });
+
+    it("is float", () => {
+        expect(typeof (new Room("a", [], 1, 10.54).discount)).toBe("number");
+    });
+
+    it("is string", () => {
+        expect(typeof (new Room("a", [], 1, "10.45").discount)).toBe("number");
+    });
+
+    it("is null", () => {
+        expect(new Room("a", [], 1, null)).toThrow();
+    });
+
+    it("is boolean", () => {
+        expect(new Room("a", [], 1, false)).toThrow();
+    });
+});
+
+describe("Room.discount to be >= 0", () => {
+    it("is 0", () => {
+        expect(new Room("a", [], 1, 0).discount).toBeGreaterThanOrEqual(0);
+    });
+
+    it("is > 0", () => {
+        expect(new Room("a", [], 1, 1).discount).toBeGreaterThan(0);
+    });
+
+    it("is > 0", () => {
+        expect(new Room("a", [], 1, 256).discount).toBeGreaterThan(0);
+    });
+
+    it("is < 0", () => {
+        expect(new Room("a", [], 1, -1)).toThrow();
+    });
+
+    it("is < 0", () => {
+        expect(new Room("a", [], 1, -1432)).toThrow();
+    });
+});
+
+describe("Room.discount to be <= 100", () => {
+    it("is 100", () => {
+        expect(new Room("a", [], 1, 100).discount).toBeLessThanOrEqual(100);
+    });
+
+    it("is < 100", () => {
+        expect(new Room("a", [], 1, 1).discount).toBeLessThanOrEqual(100);
+    });
+
+    it("is < 100", () => {
+        expect(new Room("a", [], 1, 99).discount).toBeLessThanOrEqual(100);
+    });
+
+    it("is > 100", () => {
+        expect(new Room("a", [], 1, 101)).toThrow();
+    });
+
+    it("is > 100", () => {
+        expect(new Room("a", [], 1, 1432)).toThrow();
+    });
+});
+
+describe("Room.discount to be an int", () => {
+    it("is int", () => {
+        expect(new Room("a", [], 1, 12).discount % 1).toEqual(0);
+    });
+
+    it("is int", () => {
+        expect(new Room("a", [], 1, 78).discount % 1).toEqual(0);
+    });
+
+    it("is float", () => {
+        expect(new Room("a", [], 1, 86.32).discount % 1).toEqual(0);
+    });
+
+    it("is float", () => {
+        expect(new Room("a", [], 1, 5.2).discount % 1).toEqual(0);
+    });
+});
