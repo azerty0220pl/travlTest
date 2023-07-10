@@ -934,3 +934,18 @@ describe("Booking.discount to be an int", () => {
         expect(new Booking("a", "Some email", new Date(), new Date(), 2.54, new Room("a", [], 1, 0)).discount % 1).toEqual(0);
     });
 });
+
+// Booking.room                 /////////////////////////////////////////////////////////////////////////////////////////
+describe("Booking.room is instanceof Room", () => {
+    it("is Room", () => {
+        expect(new Booking("a", "Some email", new Date(), new Date(), 2.54, new Room("a", [], 1, 0)).bookings instanceof Room).toBeTruthy();
+    });
+
+    it("is array", () => {
+        expect(() => new Booking("a", "Some email", new Date(), new Date(), 2.54, [])).toThrow();
+    });
+
+    it("is string", () => {
+        expect(() => new Booking("a", "Some email", new Date(), new Date(), 2.54, "Some String")).toThrow();
+    });
+});
