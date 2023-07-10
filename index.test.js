@@ -107,3 +107,66 @@ describe("Room.bookings elements to be Booking objects", () => {
             });
     });
 });
+
+// Room.rate                    /////////////////////////////////////////////////////////////////////////////////////////
+describe("Room.rate to be a number", () => {
+    it("is int", () => {
+        expect(typeof (new Room("a", [], 10, 0).rate)).toBe("number");
+    });
+
+    it("is float", () => {
+        expect(typeof (new Room("a", [], 10.54, 0).rate)).toBe("number");
+    });
+
+    it("is string", () => {
+        expect(new Room("a", [], "10.45", 0)).toThrow();
+    });
+
+    it("is null", () => {
+        expect(new Room("a", [], null, 0)).toThrow();
+    });
+
+    it("is boolean", () => {
+        expect(new Room("a", [], false, 0)).toThrow();
+    });
+});
+
+describe("Room.rate to be > 0", () => {
+    it("is 0", () => {
+        expect(new Room("a", [], 0, 0).rate).toBeGreaterThan(0);
+    });
+
+    it("is > 0", () => {
+        expect(new Room("a", [], 1, 0).rate).toBeGreaterThan(0);
+    });
+
+    it("is > 0", () => {
+        expect(new Room("a", [], 256, 0).rate).toBeGreaterThan(0);
+    });
+
+    it("is < 0", () => {
+        expect(new Room("a", [], -1, 0).rate).toBeGreaterThan(0);
+    });
+
+    it("is < 0", () => {
+        expect(new Room("a", [], -1432, 0).rate).toBeGreaterThan(0);
+    });
+});
+
+describe("Room.rate to be an int", () => {
+    it("is int", () => {
+        expect(new Room("a", [], 12, 0).rate % 1).toEqual(0);
+    });
+
+    it("is int", () => {
+        expect(new Room("a", [], 5434, 0).rate % 1).toEqual(0);
+    });
+
+    it("is float", () => {
+        expect(new Room("a", [], 543.32, 0).rate % 1).toEqual(0);
+    });
+
+    it("is float", () => {
+        expect(new Room("a", [], 5.2, 0).rate % 1).toEqual(0);
+    });
+});
