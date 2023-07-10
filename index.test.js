@@ -938,14 +938,33 @@ describe("Booking.discount to be an int", () => {
 // Booking.room                 /////////////////////////////////////////////////////////////////////////////////////////
 describe("Booking.room is instanceof Room", () => {
     it("is Room", () => {
-        expect(new Booking("a", "Some email", new Date(), new Date(), 2.54, new Room("a", [], 1, 0)).bookings instanceof Room).toBeTruthy();
+        expect(new Booking("a", "Some email", new Date(), new Date(), 0, new Room("a", [], 1, 0)).bookings instanceof Room).toBeTruthy();
     });
 
     it("is array", () => {
-        expect(() => new Booking("a", "Some email", new Date(), new Date(), 2.54, [])).toThrow();
+        expect(() => new Booking("a", "Some email", new Date(), new Date(), 0, [])).toThrow();
     });
 
     it("is string", () => {
-        expect(() => new Booking("a", "Some email", new Date(), new Date(), 2.54, "Some String")).toThrow();
+        expect(() => new Booking("a", "Some email", new Date(), new Date(), 0, "Some String")).toThrow();
+    });
+});
+
+// Booking.getFee               /////////////////////////////////////////////////////////////////////////////////////////
+describe("Booking.getFee return is correct", () => {
+    it("with no discount", () => {
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 0, new Room("a", [], 100, 0)).getFee()).toEqual(100);
+    });
+    
+    it("with one discount", () => {
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 25, new Room("a", [], 100, 0)).getFee()).toEqual(75);
+    });
+    
+    it("with one discount", () => {
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 0, new Room("a", [], 100, 25)).getFee()).toEqual(75);
+    });
+    
+    it("with two discount", () => {
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 20, new Room("a", [], 100, 20)).getFee()).toEqual(64);
     });
 });
