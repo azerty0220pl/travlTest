@@ -605,3 +605,135 @@ describe("Room.occupancyPercentage return is correct", () => {
         expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual(50);
     });
 });
+
+// Room availableRooms           /////////////////////////////////////////////////////////////////////////////////////////
+describe("Room.availableRooms params are valid", () => {
+    const room = new Room("a", [], 1, 0);
+
+    it("rooms are empty array", () => {
+        expect(() => Room.availableRooms([], new Date(), new Date())).not.toThrow();
+    });
+
+    it("rooms are array", () => {
+        expect(() => Room.availableRooms([room, room], new Date(), new Date())).not.toThrow();
+    });
+
+    it("dates are Date", () => {
+        expect(() => Room.availableRooms([], new Date(), new Date())).not.toThrow();
+    });
+
+    it("date is number", () => {
+        expect(() => Room.availableRooms([], 4)).toThrow();
+    });
+
+    it("dates are string", () => {
+        expect(() => Room.availableRooms([], "17/02/2002", "18/02/2002")).toThrow();
+    });
+
+    it("date is boolean", () => {
+        expect(() => Room.availableRooms([], null, false)).toThrow();
+    });
+});
+
+describe("Room.availableRooms Dates make sense", () => {
+
+    it("same date", () => {
+        expect(() => Room.availableRooms([], new Date(2023, 6, 12), new Date(2023, 6, 12))).not.toThrow();
+    });
+
+    it("same date", () => {
+        expect(() => Room.availableRooms([], new Date(2022, 11, 21), new Date(2022, 11, 21))).not.toThrow();
+    });
+
+    it("date make sense", () => {
+        expect(() => Room.availableRooms([], new Date(2023, 6, 12), new Date(2023, 6, 16))).not.toThrow();
+    });
+
+    it("date make sense", () => {
+        expect(() => Room.availableRooms([], new Date(2022, 4, 11), new Date(2025, 11, 1))).not.toThrow();
+    });
+
+    it("date DON'T make sense", () => {
+        expect(() => Room.availableRooms([], new Date(2025, 4, 11), new Date(2025, 4, 10))).toThrow();
+    });
+
+    it("date DON'T make sense", () => {
+        expect(() => Room.availableRooms([], new Date(2026, 1, 1), new Date(2025, 11, 2))).toThrow();
+    });
+});
+
+describe("Room.availableRooms return is correct", () => {
+    const room0 = new Room("a", [], 1, 0);
+
+    const room1 = new Room(
+        "a",
+        [
+            new Booking(
+                "Name",
+                "email",
+                new Date(2023, 6, 12),
+                new Date(2023, 6, 14),
+                0,
+                new Room("a", [], 1, 0)
+            )
+        ],
+        1,
+        0
+    );
+
+    const room2 = new Room(
+        "a",
+        [
+            new Booking(
+                "Name",
+                "email",
+                new Date(2023, 6, 11),
+                new Date(2023, 6, 13),
+                0,
+                new Room("a", [], 1, 0)
+            ),
+            new Booking(
+                "Name",
+                "email",
+                new Date(2023, 6, 15),
+                new Date(2023, 6, 17),
+                0,
+                new Room("a", [], 1, 0)
+            )
+        ],
+        1,
+        0
+    );
+
+    it("Should be [] (empty rooms)", () => {
+        expect(Room.availableRooms([], new Date(2023, 6, 15), new Date(2023, 6, 19))).toEqual([]);
+    });
+
+    it("Should be []", () => {
+        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual([]);
+    });
+
+    it("Should be [room0]", () => {
+        expect(Room.totalOccupancyPercentage([room0], new Date(2023, 7, 15), new Date(2023, 7, 19))).toEqual([room0]);
+    });
+
+    it("Should be [room1]", () => {
+        expect(Room.totalOccupancyPercentage([room1], new Date(2023, 7, 15), new Date(2023, 7, 19))).toEqual([room1]);
+    });
+
+    it("Should be [room2]", () => {
+        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 14), new Date(2023, 6, 14))).toEqual([room2]);
+    });
+
+    it("Should be [room2]", () => {
+        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 9), new Date(2023, 6, 12))).toEqual([room2]);
+    });
+
+    it("Should be [room0]", () => {
+        expect(Room.totalOccupancyPercentage([room1, room0, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual([room0]);
+    });
+
+    it("Should be [room2]", () => {
+        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual([room2]);
+    });
+});
