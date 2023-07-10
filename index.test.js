@@ -12,20 +12,19 @@ describe("Room.name is a string", () => {
     });
 
     it("is int", () => {
-        expect(new Room(4, [], 1, 0)).toThrow();
+        expect(() => new Room(4, [], 1, 0)).toThrow();
     });
 
     it("is float", () => {
-        expect(new Room(4.1, [], 1, 0)).toThrow();
+        expect(() => new Room(4.1, [], 1, 0)).toThrow();
     });
 
     it("is boolean", () => {
-        expect(new Room(true, [], 1, 0)).toThrow();
+        expect(() => new Room(true, [], 1, 0)).toThrow();
     });
 
     it("is null", () => {
-        const room = new Room(null, [], 1, 0);
-        expect(typeof (room.name)).toThrow();
+        expect(() => new Room(null, [], 1, 0)).toThrow();
     });
 });
 
@@ -39,7 +38,7 @@ describe("Room.name.length is greater than 0", () => {
     });
 
     it("equals 0", () => {
-        expect(new Room("", [], 1, 0)).toThrow();
+        expect(() => new Room("", [], 1, 0)).toThrow();
     });
 });
 
@@ -54,15 +53,15 @@ describe("Room.bookings is array", () => {
     });
 
     it("is boolean", () => {
-        expect(new Room("a", false, 1, 0)).toThrow();
+        expect(() => new Room("a", false, 1, 0)).toThrow();
     });
 
     it("is int", () => {
-        expect(new Room("a", 1, 1, 0)).toThrow();
+        expect(() => new Room("a", 1, 1, 0)).toThrow();
     });
 
     it("is string", () => {
-        expect(new Room("a", "Some String", 1, 0)).toThrow();
+        expect(() => new Room("a", "Some String", 1, 0)).toThrow();
     });
 });
 
@@ -735,5 +734,47 @@ describe("Room.availableRooms return is correct", () => {
 
     it("Should be [room2]", () => {
         expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual([room2]);
+    });
+});
+
+// Booking Constructor Tests    /////////////////////////////////////////////////////////////////////////////////////////
+// Booking.name                 /////////////////////////////////////////////////////////////////////////////////////////
+describe("Booking.name is a string", () => {
+    it("is string", () => {
+        expect(typeof (new Booking("A - 303", [], 1, 0).name)).toBe("string");
+    });
+
+    it("is string", () => {
+        expect(typeof (new Booking("Some Array", [], 1, 0).name)).toBe("string");
+    });
+
+    it("is int", () => {
+        expect(() => new Booking(4, [], 1, 0)).toThrow();
+    });
+
+    it("is float", () => {
+        expect(() => new Booking(4.1, [], 1, 0)).toThrow();
+    });
+
+    it("is boolean", () => {
+        expect(() => new Booking(true, [], 1, 0)).toThrow();
+    });
+
+    it("is null", () => {
+        expect(() => new Booking(null, [], 1, 0)).toThrow();
+    });
+});
+
+describe("Booking.name.length is greater than 0", () => {
+    it("is > 0", () => {
+        expect(new Booking("Some Array", [], 1, 0).name.length).toBeGreaterThan(0);
+    });
+
+    it("is > 0", () => {
+        expect(new Booking("Some Other Array", [], 1, 0).name.length).toBeGreaterThan(0);
+    });
+
+    it("equals 0", () => {
+        expect(() => new Booking("", [], 1, 0)).toThrow();
     });
 });
