@@ -255,3 +255,107 @@ describe("Room.discount to be an int", () => {
         expect(new Room("a", [], 1, 5.2).discount % 1).toEqual(0);
     });
 });
+// Room isOccupied               /////////////////////////////////////////////////////////////////////////////////////////
+describe("Room.isOccupied(date) param is Date", () => {
+    const room = new Room("a", [], 1, 0);
+
+    it("is Date", () => {
+        expect(room.isOccupied(new Date())).not.toThrow();
+    });
+
+    it("is number", () => {
+        expect(room.isOccupied(4)).toThrow();
+    });
+
+    it("is string", () => {
+        expect(room.isOccupied("17/02/2002")).toThrow();
+    });
+
+    it("is null", () => {
+        expect(room.isOccupied(null)).toThrow();
+    });
+});
+
+describe("Room.isOccupied(date) return is correct", () => {
+    const room0 = new Room("a", [], 1, 0);
+
+    const room1 = new Room(
+        "a",
+        [
+            new Booking(
+                "Name",
+                "email",
+                new Date(2023, 6, 12),
+                new Date(2023, 6, 14),
+                0,
+                new Room("a", [], 1, 0)
+            )
+        ],
+        1,
+        0
+    );
+
+    const room2 = new Room(
+        "a",
+        [
+            new Booking(
+                "Name",
+                "email",
+                new Date(2023, 6, 11),
+                new Date(2023, 6, 13),
+                0,
+                new Room("a", [], 1, 0)
+            ),
+            new Booking(
+                "Name",
+                "email",
+                new Date(2023, 6, 15),
+                new Date(2023, 6, 17),
+                0,
+                new Room("a", [], 1, 0)
+            )
+        ],
+        1,
+        0
+    );
+
+    it("Should be false (empty bookings)", () => {
+        expect(room0.isOccupied(new Date())).toBeFalsy();
+    });
+
+    it("Should be false", () => {
+        expect(room1.isOccupied(new Date(2023, 6, 14))).toBeFalsy();
+    });
+
+    it("Should be false", () => {
+        expect(room2.isOccupied(new Date(2023, 6, 14))).toBeFalsy();
+    });
+
+    it("Should be false", () => {
+        expect(room2.isOccupied(new Date(2023, 6, 19))).toBeFalsy();
+    });
+
+    it("Should be true", () => {
+        expect(room1.isOccupied(new Date(2023, 6, 11))).toBeTruthy();
+    });
+
+    it("Should be true", () => {
+        expect(room1.isOccupied(new Date(2023, 6, 12))).toBeTruthy();
+    });
+
+    it("Should be true", () => {
+        expect(room1.isOccupied(new Date(2023, 6, 13))).toBeTruthy();
+    });
+
+    it("Should be true", () => {
+        expect(room2.isOccupied(new Date(2023, 6, 15))).toBeTruthy();
+    });
+
+    it("Should be true", () => {
+        expect(room2.isOccupied(new Date(2023, 6, 16))).toBeTruthy();
+    });
+
+    it("Should be true", () => {
+        expect(room2.isOccupied(new Date(2023, 6, 17))).toBeTruthy();
+    });
+});
