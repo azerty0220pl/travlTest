@@ -834,5 +834,18 @@ describe("Booking.checkIn is Date", () => {
         expect(() => new Booking("a", "Some email", null, new Date(), 0, new Room("a", [], 1, 0))).toThrow();
     });
 });
+
+// Booking.checkOut             /////////////////////////////////////////////////////////////////////////////////////////
+describe("Booking.checkIn is Date", () => {
+    it("is Date", () => {
+        expect(new Booking("a", "Some email", new Date(), new Date(), 0, new Room("a", [], 1, 0)).checkOut instanceof Date).toBeTruthy();
+    });
+
+    it("is String", () => {
+        expect(() => new Booking("a", "Some email", new Date(), "12/12/12", 0, new Room("a", [], 1, 0))).toThrow();
+    });
+
+    it("is null", () => {
+        expect(() => new Booking("a", "Some email", new Date(), null, 0, new Room("a", [], 1, 0))).toThrow();
     });
 });
