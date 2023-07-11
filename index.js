@@ -110,12 +110,41 @@ class Room {
 }
 
 class Booking {
-    constructor (name, email, checkIn, checkOut, discount, room) {
+    constructor(name, email, checkIn, checkOut, discount, room) {
+        if (typeof (name) !== "string")
+            throw new Error("name should be a string.");
+
         this.name = name;
-        this.email = email;
+
+        if (this.name.length === 0)
+            throw new Error("name should be longer than 0.");
+
+        if (typeof (email) !== "string")
+            throw new Error("email should be a string.");
+
+        this.email = String(email);
+        if (this.email.length === 0)
+            throw new Error("email should be longer than 0.");
+
+        if (!(checkIn instanceof Date))
+            throw new Error("checkIn should be instaceof Date");
+        if (!(checkOut instanceof Date))
+            throw new Error("checkOut should be instaceof Date");
+
+        if (checkIn > checkOut)
+            throw new Error("checkIn cannot be greater than checkOut")
+
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+
+        if (typeof (discount) !== "number" || discount % 1 !== 0 || discount < 0 || discount > 100)
+            throw new Error("rate should be an integer bigger than 0 and smaller than 100");
+
         this.discount = discount;
+
+        if (!(room instanceof Room))
+            throw new Error("All elements of bookings should be instances of Booking.");
+
         this.room = room;
     }
 
