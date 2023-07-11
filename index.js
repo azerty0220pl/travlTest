@@ -30,7 +30,10 @@ class Room {
     }
 
     isOccupied(date) {
-        return;
+        if (!(date instanceof Date))
+            throw new Error("date should be instaceof Date");
+
+        return this.bookings.find(el => el.checkIn <= date && el.checkOut >= date);
     }
 
     occupancyPercetage(startDate, endDate) {
