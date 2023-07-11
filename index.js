@@ -148,8 +148,11 @@ class Booking {
         this.room = room;
     }
 
-    getFee(){
-        return;
+    getFee() {
+        const time = this.checkOut - this.checkIn;
+        const days = Math.ceil(time / (1000 * 60 * 60 * 24)) + 1;
+
+        return days * this.room.rate * (1 - this.room.discount / 100) * ( 1 - this.discount / 100);
     }
 }
 
