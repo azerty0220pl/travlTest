@@ -60,7 +60,27 @@ class Room {
     }
 
     static totalOccupancyPercentage(rooms, startDate, endDate) {
-        return;
+        rooms.forEach(el => {
+            if (!(el instanceof Room))
+                throw new Error("All elements of rooms should be instances of Room.");
+        });
+
+        if (!(startDate instanceof Date))
+            throw new Error("startDate should be instaceof Date");
+
+        if (!(endDate instanceof Date))
+            throw new Error("endDate should be instaceof Date");
+
+        if (startDate > endDate)
+            throw new Error("startDate cannot be greater than endDate");
+
+        let res = 0;
+
+        rooms.forEach(el => {
+            res += el.occupancyPercentage(startDate, endDate);
+        })
+
+        return res > 0 ? res / rooms.length : 0;
     }
 
     static availableRooms(rooms, startDate, endDate) {
