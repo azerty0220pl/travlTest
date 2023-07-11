@@ -36,8 +36,27 @@ class Room {
         return this.bookings.find(el => el.checkIn <= date && el.checkOut >= date);
     }
 
-    occupancyPercetage(startDate, endDate) {
-        return;
+    occupancyPercentage(startDate, endDate) {
+        if (!(startDate instanceof Date))
+            throw new Error("startDate should be instaceof Date");
+
+        if (!(endDate instanceof Date))
+            throw new Error("endDate should be instaceof Date");
+
+        if (startDate > endDate)
+            throw new Error("startDate cannot be greater than endDate");
+
+        let i = 0;
+        let counter = 0;
+        let date = new Date(startDate.getTime());
+
+        for (; date <= endDate; i++) {
+            if (this.isOccupied(date))
+                counter++;
+            date.setDate(date.getDate() + 1);
+        }
+
+        return counter / i * 100;
     }
 
     static totalOccupancyPercentage(rooms, startDate, endDate) {
