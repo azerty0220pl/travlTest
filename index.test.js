@@ -49,7 +49,7 @@ describe("Room.bookings is array", () => {
     });
 
     it("is array (not empty)", () => {
-        expect(Array.isArray(new Room("a", [0, 1, 2], 1, 0).bookings)).toBeTruthy();
+        expect(Array.isArray(new Room("a", [new Booking("name", "email", new Date(), new Date(), 41, new Room("A - 303", [], 14500, 40))], 1, 0).bookings)).toBeTruthy();
     });
 
     it("is boolean", () => {
@@ -67,7 +67,7 @@ describe("Room.bookings is array", () => {
 
 describe("Room.bookings elements to be Booking objects", () => {
     it("is empty", () => {
-        new Room("", [], 0, 0).bookings.forEach(el => {
+        new Room("a", [], 1, 0).bookings.forEach(el => {
             expect(el instanceof Booking).toBeTruthy();
         });
     });
@@ -86,24 +86,15 @@ describe("Room.bookings elements to be Booking objects", () => {
     });
 
     it("is array of int", () => {
-        new Room("a", [0, 1, 2, 3, 4, 5], 1, 0)
-            .bookings.forEach(el => {
-                expect(el instanceof Booking).toBeTruthy();
-            });
+        expect(() => new Room("a", [0, 1, 2, 3, 4, 5], 1, 0)).toThrow();
     });
 
     it("is array of mixed types", () => {
-        new Room("a", [new Booking("name", "email", new Date(), new Date(), 41, new Room("A - 303", [], 14500, 40)), 1, false, 3, 4, 5], 1, 0)
-            .bookings.forEach(el => {
-                expect(el instanceof Booking).toBeTruthy();
-            });
+        expect(() => new Room("a", [new Booking("name", "email", new Date(), new Date(), 41, new Room("A - 303", [], 14500, 40)), 1, false, 3, 4, 5], 1, 0)).toThrow();
     });
 
     it("is array of mixed types", () => {
-        new Room("a", [null, 1.1, true, 3, 4, 5], 1, 0)
-            .bookings.forEach(el => {
-                expect(el instanceof Booking).toBeTruthy();
-            });
+        expect(() => new Room("a", [null, 1.1, true, 3, 4, 5], 1, 0)).toThrow();
     });
 });
 
@@ -132,7 +123,7 @@ describe("Room.rate to be a number", () => {
 
 describe("Room.rate to be > 0", () => {
     it("is 0", () => {
-        expect(new Room("a", [], 0, 0).rate).toBeGreaterThan(0);
+        expect(() => new Room("a", [], 0, 0).rate).toThrow();
     });
 
     it("is > 0", () => {
@@ -144,11 +135,11 @@ describe("Room.rate to be > 0", () => {
     });
 
     it("is < 0", () => {
-        expect(new Room("a", [], -1, 0).rate).toBeGreaterThan(0);
+        expect(() => new Room("a", [], -1, 0)).toThrow();
     });
 
     it("is < 0", () => {
-        expect(new Room("a", [], -1432, 0).rate).toBeGreaterThan(0);
+        expect(() => new Room("a", [], -1432, 0)).toThrow();
     });
 });
 
@@ -181,15 +172,15 @@ describe("Room.discount to be a number", () => {
     });
 
     it("is string", () => {
-        expect(typeof (new Room("a", [], 1, "10.45").discount)).toBe("number");
+        expect(() => new Room("a", [], 1, "10.45")).toThrow();
     });
 
     it("is null", () => {
-        expect(() => { new Room("a", [], 1, null) }).toThrow();
+        expect(() => new Room("a", [], 1, null)).toThrow();
     });
 
     it("is boolean", () => {
-        expect(() => { new Room("a", [], 1, false) }).toThrow();
+        expect(() => new Room("a", [], 1, false)).toThrow();
     });
 });
 
@@ -203,7 +194,7 @@ describe("Room.discount to be >= 0", () => {
     });
 
     it("is > 0", () => {
-        expect(new Room("a", [], 1, 256).discount).toBeGreaterThan(0);
+        expect(new Room("a", [], 1, 56).discount).toBeGreaterThan(0);
     });
 
     it("is < 0", () => {
@@ -285,8 +276,8 @@ describe("Room.isOccupied(date) return is correct", () => {
             new Booking(
                 "Name",
                 "email",
-                new Date(2023, 6, 12),
-                new Date(2023, 6, 14),
+                new Date(2023, 6, 11),
+                new Date(2023, 6, 13),
                 0,
                 new Room("a", [], 1, 0)
             )
@@ -369,7 +360,7 @@ describe("Room.occupancyPercentage param are Date", () => {
     });
 
     it("is number", () => {
-        expect(room.occupancyPercentage(4)).toThrow();
+        expect(() => room.occupancyPercentage(4)).toThrow();
     });
 
     it("are string", () => {
@@ -418,8 +409,8 @@ describe("Room.occupancyPercentage return is correct", () => {
             new Booking(
                 "Name",
                 "email",
-                new Date(2023, 6, 12),
-                new Date(2023, 6, 14),
+                new Date(2023, 6, 11),
+                new Date(2023, 6, 13),
                 0,
                 new Room("a", [], 1, 0)
             )
@@ -465,7 +456,7 @@ describe("Room.occupancyPercentage return is correct", () => {
     });
 
     it("Should be 25", () => {
-        expect(room1.occupancyPercentage(new Date(2023, 6, 9), new Date(2023, 6, 12))).toEqual(25);
+        expect(room1.occupancyPercentage(new Date(2023, 6, 8), new Date(2023, 6, 11))).toEqual(25);
     });
 
     it("Should be 75", () => {
@@ -506,7 +497,7 @@ describe("Room.totalOccupancyPercentage param are valid", () => {
     });
 });
 
-describe("Room.occupancyPercentage Dates make sense", () => {
+describe("Room.totalOccupancyPercentage Dates make sense", () => {
 
     it("same date", () => {
         expect(() => Room.totalOccupancyPercentage([], new Date(2023, 6, 12), new Date(2023, 6, 12))).not.toThrow();
@@ -533,7 +524,7 @@ describe("Room.occupancyPercentage Dates make sense", () => {
     });
 });
 
-describe("Room.occupancyPercentage return is correct", () => {
+describe("Room.totalOccupancyPercentage return is correct", () => {
     const room0 = new Room("a", [], 1, 0);
 
     const room1 = new Room(
@@ -542,8 +533,8 @@ describe("Room.occupancyPercentage return is correct", () => {
             new Booking(
                 "Name",
                 "email",
-                new Date(2023, 6, 12),
-                new Date(2023, 6, 14),
+                new Date(2023, 6, 11),
+                new Date(2023, 6, 13),
                 0,
                 new Room("a", [], 1, 0)
             )
@@ -566,8 +557,8 @@ describe("Room.occupancyPercentage return is correct", () => {
             new Booking(
                 "Name",
                 "email",
-                new Date(2023, 6, 15),
-                new Date(2023, 6, 17),
+                new Date(2023, 6, 16),
+                new Date(2023, 6, 18),
                 0,
                 new Room("a", [], 1, 0)
             )
@@ -589,19 +580,23 @@ describe("Room.occupancyPercentage return is correct", () => {
     });
 
     it("Should be 0", () => {
-        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 14), new Date(2023, 6, 14))).toEqual(0);
+        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 14), new Date(2023, 6, 15))).toEqual(0);
     });
 
     it("Should be 25", () => {
-        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 9), new Date(2023, 6, 12))).toEqual(25);
+        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 8), new Date(2023, 6, 11))).toEqual(25);
     });
 
-    it("Should be 75", () => {
-        expect(Room.totalOccupancyPercentage([room1, room0, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual(75);
+    it("Should be 25", () => {
+        expect(Room.totalOccupancyPercentage([room1, room0, room2], new Date(2023, 6, 13), new Date(2023, 6, 16))).toEqual(25);
     });
 
     it("Should be 50", () => {
-        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual(50);
+        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 17), new Date(2023, 6, 20))).toEqual(50);
+    });
+
+    it("Should be 50", () => {
+        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 13), new Date(2023, 6, 16))).toEqual(50);
     });
 });
 
@@ -709,31 +704,31 @@ describe("Room.availableRooms return is correct", () => {
     });
 
     it("Should be []", () => {
-        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual([]);
+        expect(Room.availableRooms([room1, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual([]);
     });
 
     it("Should be [room0]", () => {
-        expect(Room.totalOccupancyPercentage([room0], new Date(2023, 7, 15), new Date(2023, 7, 19))).toEqual([room0]);
+        expect(Room.availableRooms([room0], new Date(2023, 7, 15), new Date(2023, 7, 19))).toEqual([room0]);
     });
 
     it("Should be [room1]", () => {
-        expect(Room.totalOccupancyPercentage([room1], new Date(2023, 7, 15), new Date(2023, 7, 19))).toEqual([room1]);
+        expect(Room.availableRooms([room1], new Date(2023, 7, 15), new Date(2023, 7, 19))).toEqual([room1]);
     });
 
     it("Should be [room2]", () => {
-        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 14), new Date(2023, 6, 14))).toEqual([room2]);
+        expect(Room.availableRooms([room2], new Date(2023, 6, 14), new Date(2023, 6, 14))).toEqual([room2]);
     });
 
-    it("Should be [room2]", () => {
-        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 9), new Date(2023, 6, 12))).toEqual([room2]);
+    it("Should be [room1, room2]", () => {
+        expect(Room.availableRooms([room1, room2], new Date(2023, 6, 7), new Date(2023, 6, 10))).toEqual([room1, room2]);
     });
 
     it("Should be [room0]", () => {
-        expect(Room.totalOccupancyPercentage([room1, room0, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual([room0]);
+        expect(Room.availableRooms([room1, room0, room2], new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual([room0]);
     });
 
     it("Should be [room2]", () => {
-        expect(Room.totalOccupancyPercentage([room1, room2], new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual([room2]);
+        expect(Room.availableRooms([room1, room2], new Date(2023, 6, 18), new Date(2023, 6, 21))).toEqual([room1, room2]);
     });
 });
 
@@ -853,15 +848,15 @@ describe("Booking.checkIn is Date", () => {
 // Booking.discount             /////////////////////////////////////////////////////////////////////////////////////////
 describe("Booking.discount to be a number", () => {
     it("is int", () => {
-        expect(typeof (new Booking("a", "Some email", new Date(), new Date(), 0, new Room("a", [], 1, 0).discount))).toBe("number");
+        expect(typeof (new Booking("a", "Some email", new Date(), new Date(), 0, new Room("a", [], 1, 0)).discount)).toBe("number");
     });
 
     it("is float", () => {
-        expect(typeof (new Booking("a", "Some email", new Date(), new Date(), 32.1, new Room("a", [], 1, 0).discount))).toBe("number");
+        expect(() => { new Booking("a", "Some email", new Date(), new Date(), 32.1, new Room("a", [], 1, 0)) }).toThrow();
     });
 
     it("is string", () => {
-        expect(typeof (new Booking("a", "Some email", new Date(), new Date(), "10", new Room("a", [], 1, 0).discount))).toBe("number");
+        expect(() => { new Booking("a", "Some email", new Date(), new Date(), "10", new Room("a", [], 1, 0)) }).toThrow();
     });
 
     it("is null", () => {
@@ -927,18 +922,18 @@ describe("Booking.discount to be an int", () => {
     });
 
     it("is float", () => {
-        expect(new Booking("a", "Some email", new Date(), new Date(), 5.1, new Room("a", [], 1, 0)).discount % 1).toEqual(0);
+        expect(() => new Booking("a", "Some email", new Date(), new Date(), 5.1, new Room("a", [], 1, 0))).toThrow();
     });
 
     it("is float", () => {
-        expect(new Booking("a", "Some email", new Date(), new Date(), 2.54, new Room("a", [], 1, 0)).discount % 1).toEqual(0);
+        expect(() => new Booking("a", "Some email", new Date(), new Date(), 2.54, new Room("a", [], 1, 0))).toThrow();
     });
 });
 
 // Booking.room                 /////////////////////////////////////////////////////////////////////////////////////////
 describe("Booking.room is instanceof Room", () => {
     it("is Room", () => {
-        expect(new Booking("a", "Some email", new Date(), new Date(), 0, new Room("a", [], 1, 0)).bookings instanceof Room).toBeTruthy();
+        expect(new Booking("a", "Some email", new Date(), new Date(), 0, new Room("a", [], 1, 0)).room instanceof Room).toBeTruthy();
     });
 
     it("is array", () => {
@@ -953,18 +948,18 @@ describe("Booking.room is instanceof Room", () => {
 // Booking.getFee               /////////////////////////////////////////////////////////////////////////////////////////
 describe("Booking.getFee return is correct", () => {
     it("with no discount", () => {
-        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 0, new Room("a", [], 100, 0)).getFee()).toEqual(100);
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 1), 0, new Room("a", [], 100, 0)).getFee()).toEqual(100);
     });
-    
+
     it("with one discount", () => {
-        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 25, new Room("a", [], 100, 0)).getFee()).toEqual(75);
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 1), 25, new Room("a", [], 100, 0)).getFee()).toEqual(75);
     });
-    
+
     it("with one discount", () => {
-        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 0, new Room("a", [], 100, 25)).getFee()).toEqual(75);
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 1), 0, new Room("a", [], 100, 25)).getFee()).toEqual(75);
     });
-    
+
     it("with two discount", () => {
-        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 2), 20, new Room("a", [], 100, 20)).getFee()).toEqual(64);
+        expect(new Booking("a", "Some email", new Date(2023, 6, 1), new Date(2023, 6, 1), 20, new Room("a", [], 100, 20)).getFee()).toEqual(64);
     });
 });
