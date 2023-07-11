@@ -598,6 +598,14 @@ describe("Room.totalOccupancyPercentage return is correct", () => {
     it("Should be 50", () => {
         expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 13), new Date(2023, 6, 16))).toEqual(50);
     });
+
+    it("Should be 100", () => {
+        expect(Room.totalOccupancyPercentage([room1], new Date(2023, 6, 11), new Date(2023, 6, 13))).toEqual(100);
+    });
+
+    it("Should be 100", () => {
+        expect(Room.totalOccupancyPercentage([room2], new Date(2023, 6, 11), new Date(2023, 6, 13))).toEqual(100);
+    });
 });
 
 // Room availableRooms           /////////////////////////////////////////////////////////////////////////////////////////
