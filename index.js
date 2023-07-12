@@ -18,13 +18,13 @@ class Room {
 
         this.bookings = bookings;
 
-        if (typeof (rate) !== "number" || rate <= 0)
+        if (typeof (rate) !== "number" || rate < 0 || rate % 1 !== 0)
             throw new Error("rate should be an integer greater than 0");
 
-        this.rate = Math.floor(rate);
+        this.rate = rate;
 
-        if (typeof (discount) !== "number" || discount < 0 || discount > 100)
-            throw new Error("rate should be a number greater than 0 and smaller than 100");
+        if (typeof (discount) !== "number" || discount < 0 || discount > 100 || discount % 1 !== 0)
+            throw new Error("rate should be an integer greater than 0 and smaller than 100");
 
         this.discount = Math.floor(discount);
     }
@@ -111,6 +111,8 @@ class Room {
 
 class Booking {
     constructor(name, email, checkIn, checkOut, discount, room) {
+        let emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
         if (typeof (name) !== "string")
             throw new Error("name should be a string.");
 
@@ -121,6 +123,9 @@ class Booking {
 
         if (typeof (email) !== "string")
             throw new Error("email should be a string.");
+
+        if (!emailRegex.test(email))
+            throw new Error("email format is incorrect");
 
         this.email = String(email);
         if (this.email.length === 0)
@@ -152,7 +157,7 @@ class Booking {
         const time = this.checkOut - this.checkIn;
         const days = Math.ceil(time / (1000 * 60 * 60 * 24)) + 1;
 
-        return days * this.room.rate * (1 - this.room.discount / 100) * ( 1 - this.discount / 100);
+        return Math.floor(days * this.room.rate * (1 - this.room.discount / 100) * (1 - this.discount / 100));
     }
 }
 
