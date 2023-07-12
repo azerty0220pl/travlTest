@@ -459,12 +459,16 @@ describe("Room.occupancyPercentage return is correct", () => {
         expect(room1.occupancyPercentage(new Date(2023, 6, 8), new Date(2023, 6, 11))).toEqual(25);
     });
 
+    it("Should be 50", () => {
+        expect(room2.occupancyPercentage(new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual(50);
+    });
+
     it("Should be 75", () => {
         expect(room2.occupancyPercentage(new Date(2023, 6, 12), new Date(2023, 6, 15))).toEqual(75);
     });
 
-    it("Should be 50", () => {
-        expect(room2.occupancyPercentage(new Date(2023, 6, 16), new Date(2023, 6, 19))).toEqual(50);
+    it("Should be 100", () => {
+        expect(room2.occupancyPercentage(new Date(2023, 6, 12), new Date(2023, 6, 13))).toEqual(100);
     });
 });
 
