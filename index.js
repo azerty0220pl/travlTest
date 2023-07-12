@@ -1,12 +1,17 @@
 class Room {
     constructor(name, bookings, rate, discount) {
+        const nameRegex = /Habitación \d{3}/;
         if (typeof (name) !== "string")
             throw new Error("name should be a string.");
 
-        this.name = name;
-
-        if (this.name.length === 0)
+        if (name.length === 0)
             throw new Error("name should be longer than 0.");
+
+            console.log("'" + name + "'", "'" + nameRegex + "'", "'" + nameRegex.test(name) + "'")
+        if (!nameRegex.test(name))
+            throw new Error("name should have proper format.");
+
+        this.name = name;
 
         if (!Array.isArray(bookings))
             throw new Error("bookings should be an array.");
