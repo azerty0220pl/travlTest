@@ -49,7 +49,7 @@ describe("Room.bookings is array", () => {
     });
 
     it("is array (not empty)", () => {
-        expect(Array.isArray(new Room("a", [new Booking("name", "email", new Date(), new Date(), 41, new Room("A - 303", [], 14500, 40))], 1, 0).bookings)).toBeTruthy();
+        expect(Array.isArray(new Room("a", [new Booking("name", "email@email.com", new Date(), new Date(), 41, new Room("A - 303", [], 14500, 40))], 1, 0).bookings)).toBeTruthy();
     });
 
     it("is boolean", () => {
@@ -740,7 +740,7 @@ describe("Room.availableRooms return is correct", () => {
 // Booking.name                 /////////////////////////////////////////////////////////////////////////////////////////
 describe("Booking.name is a string", () => {
     it("is string", () => {
-        expect(typeof (new Booking("Some Name", "e", new Date(), new Date(), 0, new Room("a", [], 1, 0)).name)).toBe("string");
+        expect(typeof (new Booking("Some Name", "email@email.com", new Date(), new Date(), 0, new Room("a", [], 1, 0)).name)).toBe("string");
     });
 
     it("is string", () => {
@@ -805,7 +805,7 @@ describe("Booking.email is a string", () => {
     });
 });
 
-describe("Booking.name.length is greater than 0", () => {
+describe("Booking.email.length is greater than 0", () => {
     it("is > 0", () => {
         expect(new Booking("a", "email@email.com", new Date(), new Date(), 0, new Room("a", [], 1, 0)).email.length).toBeGreaterThan(0);
     });
@@ -816,6 +816,28 @@ describe("Booking.name.length is greater than 0", () => {
 
     it("equals 0", () => {
         expect(() => new Booking("a", "", new Date(), new Date(), 0, new Room("a", [], 1, 0))).toThrow();
+    });
+});
+
+describe("Booking.email has correct format", () => {
+    it("format is correct", () => {
+        expect(() => new Booking("a", "email@email.com", new Date(), new Date(), 0, new Room("a", [], 1, 0))).not.toThrow();
+    });
+    
+    it("format is correct", () => {
+        expect(() => new Booking("a", "other.email@email.es", new Date(), new Date(), 0, new Room("a", [], 1, 0))).not.toThrow();
+    });
+    
+    it("format is incorrect", () => {
+        expect(() => new Booking("a", "@email.es", new Date(), new Date(), 0, new Room("a", [], 1, 0))).toThrow();
+    });
+    
+    it("format is incorrect", () => {
+        expect(() => new Booking("a", "email@email", new Date(), new Date(), 0, new Room("a", [], 1, 0))).toThrow();
+    });
+    
+    it("format is incorrect", () => {
+        expect(() => new Booking("a", "email.es", new Date(), new Date(), 0, new Room("a", [], 1, 0))).toThrow();
     });
 });
 
