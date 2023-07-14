@@ -7,7 +7,6 @@ class Room {
         if (name.length === 0)
             throw new Error("name should be longer than 0.");
 
-            console.log("'" + name + "'", "'" + nameRegex + "'", "'" + nameRegex.test(name) + "'")
         if (!nameRegex.test(name))
             throw new Error("name should have proper format.");
 
