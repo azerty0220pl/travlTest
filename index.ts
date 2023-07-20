@@ -1,10 +1,10 @@
 class Room {
-    name: string;
-    bookings: Booking[];
-    rate: number;
-    discount: number;
+    name;
+    bookings;
+    rate;
+    discount;
 
-    constructor(name, bookings, rate, discount) {
+    constructor(name: string, bookings: Booking[], rate: number, discount: number) {
         const nameRegex = /Habitación \d{3}/;
         if (typeof (name) !== "string")
             throw new Error("name should be a string.");
@@ -119,14 +119,14 @@ class Room {
 }
 
 class Booking {
-    name: string;
-    email: string;
-    checkIn: Date;
-    checkOut: Date;
-    discount: number;
-    room: Room;
+    name;
+    email;
+    checkIn;
+    checkOut;
+    discount;
+    room;
 
-    constructor(name, email, checkIn, checkOut, discount, room) {
+    constructor(name: string, email: string, checkIn: Date, checkOut: Date, discount: number, room: Room) {
         let emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
         if (typeof (name) !== "string")
